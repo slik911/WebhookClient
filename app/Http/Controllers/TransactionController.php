@@ -47,9 +47,14 @@ class TransactionController extends Controller
 
         $known_signature = hash_hmac('sha256', $request->getContent(), $known_token);
 
+        return $request->getContent();
+
         if (! hash_equals($known_signature, $signature_parts[1])) {
             throw new UnauthorizedException('Could not verify request signature ' . $signature_parts[1]);
         }
+        // if (! hash_equals($signature_parts[1], $known_signature)) {
+        //     throw new UnauthorizedException('Could not verify request signature ' . $signature_parts[1]);
+        // }
 
         // $computedSignature = hash_hmac('sha256', $request->getContent(), $signingSecret);
 
