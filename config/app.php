@@ -119,7 +119,7 @@ return [
     |
     */
 
-    'webhook_client_secret' => env('WEBHOOK_CLIENT_SECRET'),
+    'webhook_client_secret' => 'whsec_sNlhQItrUBSaIaGl2rNr720kKdl3z3h2',
 
     'key' => env('APP_KEY'),
 
