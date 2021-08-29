@@ -45,7 +45,7 @@ class TransactionController extends Controller
             throw new BadRequestHttpException('signature has invalid format');
         }
 
-        $known_signature = hash_hmac('sha1', $request->getContent(), $known_token);
+        $known_signature = hash_hmac('sha256', $request->getContent(), $known_token);
         $data = [$known_signature, $known_token, $signature_parts[1]];
         return $data;
 
