@@ -47,7 +47,7 @@ class TransactionController extends Controller
 
         $known_signature = hash_hmac('sha1', $request->getContent(), $known_token);
 
-        return $known_token;
+        // return $known_token;
 
         // if (! hash_equals($known_signature, $signature_parts[1])) {
         //     throw new UnauthorizedException('Could not verify request signature ' . $signature_parts[1]);
