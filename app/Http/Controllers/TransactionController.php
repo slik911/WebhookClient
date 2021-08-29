@@ -32,7 +32,7 @@ class TransactionController extends Controller
      */
     protected function validateGithubWebhook($known_token, Request $request)
     {
-        if (($signature = $request->headers->get('HTTP_STRIPE_SIGNATURE')) == null) {
+        if (($signature = $_SERVER['HTTP_STRIPE_SIGNATURE']) == null) {
             throw new BadRequestHttpException('Header not set');
         }
 
