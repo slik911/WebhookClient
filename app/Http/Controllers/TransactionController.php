@@ -78,7 +78,7 @@ class TransactionController extends Controller
     public function handle(Request $request)
     {
 
-        return $this->validateGithubWebhook(config('app.webhook_client_secret'), $request);
+        // return $this->validateGithubWebhook(config('app.webhook_client_secret'), $request);
 
         $this->logger->info('Hello World. The webhook is validated');
         $this->logger->info($request->getContent());
