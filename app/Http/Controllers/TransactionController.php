@@ -37,8 +37,9 @@ class TransactionController extends Controller
             throw new BadRequestHttpException('Header not set');
         }
 
-        $signature_parts = explode(',', $signature);
-        return $signature_parts[1];
+        $signature_part = explode(',', $signature);
+        $signature_parts = explode('=', $signature_part[1]);
+
 
         if (count($signature_parts) != 2) {
             throw new BadRequestHttpException('signature has invalid format');
