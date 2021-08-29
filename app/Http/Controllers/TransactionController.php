@@ -32,14 +32,38 @@ class TransactionController extends Controller
      */
     protected function validateGithubWebhook($known_token, Request $request)
     {
+
         if (($signature = $_SERVER['HTTP_STRIPE_SIGNATURE']) == null) {
             throw new BadRequestHttpException('Header not set');
         }
 
-        $known_signature = bcrypt($known_token);
-        if (! Hash::check($signature, $known_signature)) {
-            throw new UnauthorizedException('Could not verify request signature ' . $signature);
+        $signature_parts = explode(',', $signature);
+        return $signature_parts[1];
+
+        if (count($signature_parts) != 2) {
+            throw new BadRequestHttpException('signature has invalid format');
         }
+
+        $known_signature = hash_hmac('sha256', $request->getContent(), $known_token);
+
+        if (! hash_equals($known_signature, $signature_parts[1])) {
+            throw new UnauthorizedException('Could not verify request signature ' . $signature_parts[1]);
+        }
+
+        // $computedSignature = hash_hmac('sha256', $request->getContent(), $signingSecret);
+
+        // return hash_equals($signature, $computedSignature);
+
+        // $computedSignature = hash_hmac('sha256', $request->getContent(), $signingSecret);
+
+        // if (($signature = $_SERVER['HTTP_STRIPE_SIGNATURE']) == null) {
+        //     throw new BadRequestHttpException('Header not set');
+        // }
+
+        // $known_signature = bcrypt($known_token);
+        // if (! Hash::check($signature, $known_signature)) {
+        //     throw new UnauthorizedException('Could not verify request signature ' . $signature);
+        // }
 
     }
 
@@ -47,8 +71,8 @@ class TransactionController extends Controller
 
     public function handle(Request $request)
     {
-        return $_SERVER['HTTP_STRIPE_SIGNATURE'];
-        $this->validateGithubWebhook(config('app.webhook_client_secret'), $request);
+
+        return $this->validateGithubWebhook(config('app.webhook_client_secret'), $request);
 
         $this->logger->info('Hello World. The webhook is validated');
         $this->logger->info($request->getContent());
